@@ -9,7 +9,7 @@ use App\HttpClient\User as HttpUser;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpClient\HttpClient;
 
-class RedMineHttpClient implements RedMineHttpClientInterface
+class RedmineHttpClient implements RedmineHttpClientInterface
 {
     private $httpClient;
     private $logger;
@@ -88,7 +88,7 @@ class RedMineHttpClient implements RedMineHttpClientInterface
                 'issue' =>
                     [
                         'status_id' => $statusId,
-                        'notes'     => 'Changed by RedmineIssueBot'
+                        'notes'     => 'Updated by RedmineIssueBot'
                     ]
             ],
             'headers' => [
@@ -124,11 +124,11 @@ class RedMineHttpClient implements RedMineHttpClientInterface
      * @throws \Exception
      * @return HttpIssue[]
      */
-    public function getIssuesByUserIdsAndStatusId(array $userIds, int $statusId): array
+    public function getIssuesByUserIdAndStatusId(int $userId, int $statusId): array
     {
         $response = $this->request('GET', 'issues.json', [
             'query' => [
-                'assigned_to_id' => implode(',', $userIds),
+                'assigned_to_id' => $userId,
                 'status_id'      => $statusId
             ]
         ]);

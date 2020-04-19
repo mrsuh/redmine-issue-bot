@@ -5,7 +5,7 @@ namespace App\Service;
 use App\Config\Config;
 use App\Entity\User;
 use App\HttpClient\Issue as HttpIssue;
-use App\HttpClient\RedMineHttpClientInterface;
+use App\HttpClient\RedmineHttpClientInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
@@ -22,7 +22,7 @@ class Manager
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        RedMineHttpClientInterface $httpClient,
+        RedmineHttpClientInterface $httpClient,
         LoggerInterface $logger
     )
     {
@@ -42,32 +42,12 @@ class Manager
      */
     public function manage(array $users)
     {
-        $userIds = [];
         foreach ($users as $user) {
-            $userIds[] = $user->getId();
-        }
+            $httpIssues = $this->httpClient->getIssuesByUserIdAndStatusId($user->getId(), $this->config->getStatusInProgressId());
 
-        $httpIssues        = $this->httpClient->getIssuesByUserIdsAndStatusId($userIds, $this->config->getStatusInProgressId());
-        $groupedHttpIssues = [];
-        foreach ($httpIssues as $httpIssue) {
-            if (!array_key_exists($httpIssue->getAssignedToUserId(), $groupedHttpIssues)) {
-                $groupedHttpIssues[$httpIssue->getAssignedToUserId()] = [];
-            }
-            $groupedHttpIssues[$httpIssue->getAssignedToUserId()][] = $httpIssue;
-        }
+            $this->logger->debug('Handling user issues', ['userId' => $user->getId(), 'userLogin' => $user->getLogin(), 'issuesCount' => count($httpIssues)]);
 
-        foreach ($users as $user) {
-            $userId = $user->getId();
-
-            $this->logger->debug('Handling user issues', ['userId' => $user->getId(), 'userLogin' => $user->getLogin()]);
-
-            $userIssues = [];
-
-            if (isset($groupedHttpIssues[$userId])) {
-                $userIssues = $groupedHttpIssues[$userId];
-            }
-
-            $this->handleUserIssues($user, $userIssues);
+            $this->handleUserIssues($user, $httpIssues);
         }
 
         $this->handleMaxHours($users);

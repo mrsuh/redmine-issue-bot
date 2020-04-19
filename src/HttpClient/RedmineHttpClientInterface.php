@@ -7,7 +7,7 @@ use App\HttpClient\IssueStatus as HttpIssueStatus;
 use App\HttpClient\TimeEntry as HttpTimeEntry;
 use App\HttpClient\User as HttpUser;
 
-interface RedMineHttpClientInterface
+interface RedmineHttpClientInterface
 {
     public function addTimeEntry(int $issueId, float $hours, string $userLogin): void;
 
@@ -23,7 +23,7 @@ interface RedMineHttpClientInterface
     /**
      * @return HttpIssue[]
      */
-    public function getIssuesByUserIdsAndStatusId(array $userIds, int $statusId): array;
+    public function getIssuesByUserIdAndStatusId(int $userId, int $statusId): array;
 
     /**
      * @return HttpTimeEntry[]

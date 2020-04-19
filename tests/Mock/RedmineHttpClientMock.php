@@ -4,13 +4,13 @@ namespace App\Tests\Mock;
 
 use App\HttpClient\Issue as HttpIssue;
 use App\HttpClient\IssueStatus as HttpIssueStatus;
-use App\HttpClient\RedMineHttpClientInterface;
+use App\HttpClient\RedmineHttpClientInterface;
 use App\HttpClient\TimeEntry as HttpTimeEntry;
 use App\HttpClient\User as HttpUser;
 use Symfony\Component\HttpClient\Exception\ServerException;
 use Symfony\Component\HttpClient\Response\MockResponse;
 
-class RedmineHttpClientMock implements RedMineHttpClientInterface
+class RedmineHttpClientMock implements RedmineHttpClientInterface
 {
     /** @var HttpTimeEntry[] */
     public $timeEntries = [];
@@ -83,11 +83,11 @@ class RedmineHttpClientMock implements RedMineHttpClientInterface
     /**
      * @return HttpIssue[]
      */
-    public function getIssuesByUserIdsAndStatusId(array $userIds, int $statusId): array
+    public function getIssuesByUserIdAndStatusId(int $userId, int $statusId): array
     {
         $issues = [];
         foreach ($this->issues as $issue) {
-            if ($issue->getStatusId() === $statusId && in_array($issue->getAssignedToUserId(), $userIds)) {
+            if ($issue->getStatusId() === $statusId && $issue->getAssignedToUserId() === $userId) {
                 $issues[] = $issue;
             }
         }

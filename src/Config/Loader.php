@@ -3,7 +3,7 @@
 namespace App\Config;
 
 use App\Entity\User;
-use App\HttpClient\RedMineHttpClientInterface;
+use App\HttpClient\RedmineHttpClientInterface;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -13,7 +13,7 @@ class Loader
     private $userRepository;
     private $entityManager;
 
-    public function __construct(RedMineHttpClientInterface $httpClient, UserRepository $userRepository, EntityManagerInterface $entityManager)
+    public function __construct(RedmineHttpClientInterface $httpClient, UserRepository $userRepository, EntityManagerInterface $entityManager)
     {
         $this->httpClient     = $httpClient;
         $this->userRepository = $userRepository;
