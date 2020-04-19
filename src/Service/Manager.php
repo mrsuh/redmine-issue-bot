@@ -59,6 +59,8 @@ class Manager
         foreach ($users as $user) {
             $userId = $user->getId();
 
+            $this->logger->debug('Handling user issues', ['userId' => $user->getId(), 'userLogin' => $user->getLogin()]);
+
             $userIssues = [];
 
             if (isset($groupedHttpIssues[$userId])) {
@@ -90,11 +92,11 @@ class Manager
 
     private function handleNoOneInProgressIssues(User $user)
     {
+        $this->logger->info('No issues in progress', ['userId' => $user->getId(), 'userLogin' => $user->getLogin()]);
+
         if ($user->getCurrentTaskId() === null) {
             return;
         }
-
-        $this->logger->info('No issues in progress', ['userId' => $user->getId()]);
 
         $this->addCurrentTimeEntry($user);
 
@@ -106,6 +108,8 @@ class Manager
 
     private function handleOneInProgressIssue(User $user, HttpIssue $issue)
     {
+        $this->logger->info('One issue in progress', ['userId' => $user->getId(), 'userLogin' => $user->getLogin()]);
+
         if ($user->getCurrentTaskId() === null) {
             $user->setCurrentTaskId($issue->getId());
             $user->setCurrentTaskStartedAt(new \DateTimeImmutable());
@@ -145,6 +149,8 @@ class Manager
      */
     private function handleMultipleInProgressIssues(User $user, array $issues): void
     {
+        $this->logger->info('Multiple issues in progress', ['userId' => $user->getId(), 'userLogin' => $user->getLogin()]);
+
         $lastAddedId        = 0;
         $lastAddedTimestamp = 0;
         foreach ($issues as $issue) {
@@ -195,6 +201,8 @@ class Manager
 
         foreach ($users as $user) {
             $userId = $user->getId();
+
+            $this->logger->debug('Handling user issues max hours', ['userId' => $user->getId(), 'userLogin' => $user->getLogin()]);
 
             if ($user->getCurrentTaskId() === null) {
                 continue;

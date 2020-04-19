@@ -1,5 +1,6 @@
 monolog:
     handlers:
-        type: stream
-        path: "php://stdout"
-        level: info
+        main:
+            type: stream
+            path: "php://stdout"
+            level: error

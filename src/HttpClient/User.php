@@ -4,15 +4,8 @@ namespace App\HttpClient;
 
 class User
 {
-    /**
-     * @var int
-     */
-    private $id;
-
-    /**
-     * @var string
-     */
-    private $login;
+    private $id    = 0;
+    private $login = '';
 
     public function __construct(int $id, string $login)
     {
@@ -20,17 +13,11 @@ class User
         $this->login = $login;
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getLogin(): string
     {
         return $this->login;

@@ -7,6 +7,7 @@
 
 ## Installation
 ```bash
+cp .env .env.local
 sh bin/build.sh
 ```
 

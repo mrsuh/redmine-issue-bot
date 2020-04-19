@@ -121,8 +121,6 @@ class RedMineHttpClient implements RedMineHttpClientInterface
     }
 
     /**
-     * @param array $userIds
-     * @param int   $statusId
      * @throws \Exception
      * @return HttpIssue[]
      */
@@ -149,8 +147,6 @@ class RedMineHttpClient implements RedMineHttpClientInterface
     }
 
     /**
-     * @param array              $userIds
-     * @param \DateTimeImmutable $date
      * @throws \Exception
      * @return HttpTimeEntry[]
      */

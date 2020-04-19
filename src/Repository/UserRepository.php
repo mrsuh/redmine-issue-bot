@@ -25,7 +25,6 @@ class UserRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param array $ids
      * @return User[]
      */
     public function findByIds(array $ids): array

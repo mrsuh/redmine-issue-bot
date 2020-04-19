@@ -4,25 +4,11 @@ namespace App\HttpClient;
 
 class Issue
 {
-    /**
-     * @var int
-     */
-    private $id;
-
-    /**
-     * @var int
-     */
-    private $assignedToUserId;
-
-    /**
-     * @var \DateTimeImmutable
-     */
+    private $id               = 0;
+    private $assignedToUserId = 0;
+    /** @var \DateTimeImmutable */
     private $updatedOn;
-
-    /**
-     * @var int
-     */
-    private $statusId;
+    private $statusId = 0;
 
     public function __construct(int $id, int $assignedToUserId, \DateTimeImmutable $updatedOn, int $statusId)
     {
