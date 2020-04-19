@@ -1,0 +1,10 @@
+url: 'http://rmdocker:2gy4wQP44bRc@127.0.0.1:9999?token=dc74f95ea329d9aff791f5b912df2d8b021f260f'
+maxDailyHours: 8
+
+statuses:
+    new: 'New'
+    inProgress: 'In Progress'
+
+users:
+    -   id: 'me'
+        trackTime: true

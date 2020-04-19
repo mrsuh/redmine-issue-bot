@@ -1,0 +1,5 @@
+monolog:
+    handlers:
+        type: stream
+        path: "php://stdout"
+        level: info
