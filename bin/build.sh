@@ -14,5 +14,11 @@ cd "$(cd `dirname $0` && pwd)/.."
 
 rm -rf var/cache/*
 
-composer install --prefer-dist --no-interaction
-composer dump-autoload --optimize --classmap-authoritative
+if which composer >/dev/null 2>&1; then
+  composer install --prefer-dist --no-interaction
+  composer dump-autoload --optimize --classmap-authoritative
+else
+  test -e "composer.phar" || php -r "readfile('https://getcomposer.org/installer');" | php
+  php composer.phar install --prefer-dist --no-interaction
+  php composer.phar dump-autoload --optimize --classmap-authoritative
+fi
