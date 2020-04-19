@@ -1,4 +1,6 @@
 {
+    "name": "mrsuh/redmine-issue-bot",
+    "description": "",
     "type": "project",
     "license": "proprietary",
     "require": {
@@ -9,7 +11,7 @@
         "monolog/monolog": "^2.0",
         "symfony/console": "5.*",
         "symfony/dotenv": "5.*",
-        "symfony/flex": "*",
+        "symfony/flex": "1.*",
         "symfony/framework-bundle": "5.*",
         "symfony/http-client": "5.*",
         "symfony/monolog-bundle": "^3.5",
