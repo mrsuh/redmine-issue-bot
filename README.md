@@ -1,5 +1,7 @@
 # Redmine issue bot
 
+![](https://github.com/mrsuh/redmine-issue-bot/workflows/Tests/badge.svg)
+
 * track issue time
 * sync issue statuses
 
