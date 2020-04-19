@@ -12,7 +12,7 @@ set -ex pipefail
 # Need to change directory to one level up from current script location
 cd "$(cd `dirname $0` && pwd)/.."
 
-rm -rf var/cache/*
+sh bin/build.sh
 
 php bin/console doctrine:migrations:migrate --no-interaction
 php bin/console manage --period=3
