@@ -216,7 +216,7 @@ class ManagerTest extends WebTestCase
                     ],
                     2,
                     new \DateTimeImmutable(date('Y-m-d H:i:30')),
-                    new HttpTimeEntry(RedmineHttpClientMock::userId, 1, 0.0)
+                    [new HttpTimeEntry(RedmineHttpClientMock::userId, 1, 0.0)]
                 ),
             ],
             //no one
@@ -234,10 +234,42 @@ class ManagerTest extends WebTestCase
                     [],
                     null,
                     null,
-                    new HttpTimeEntry(RedmineHttpClientMock::userId, 1, 0.0)
+                    [new HttpTimeEntry(RedmineHttpClientMock::userId, 1, 0.0)]
                 ),
             ],
             //max hours
+            [
+                new TestSet(
+                    [
+                        new HttpIssue(
+                            1,
+                            RedmineHttpClientMock::userId,
+                            new \DateTimeImmutable(),
+                            RedmineHttpClientMock::statusInProgressId
+                        )
+                    ],
+                    1,
+                    new \DateTimeImmutable(),
+                    [new HttpTimeEntry(RedmineHttpClientMock::userId, 1, 9.0)]
+                ),
+                new TestSet(
+                    [
+                        new HttpIssue(
+                            1,
+                            RedmineHttpClientMock::userId,
+                            new \DateTimeImmutable(),
+                            RedmineHttpClientMock::statusNewId
+                        )
+                    ],
+                    null,
+                    null,
+                    [
+                        new HttpTimeEntry(RedmineHttpClientMock::userId, 1, 9.0),
+                        new HttpTimeEntry(RedmineHttpClientMock::userId, 1, 1.0)
+                    ]
+                ),
+            ],
+            //daily issues
             [
                 new TestSet(
                     [
@@ -249,7 +281,7 @@ class ManagerTest extends WebTestCase
                         )
                     ],
                     1,
-                    new \DateTimeImmutable(date('1970-01-01 00:00:00'))
+                    new \DateTimeImmutable(date('Y-m-d 00:00:00'))
                 ),
                 new TestSet(
                     [
@@ -262,7 +294,7 @@ class ManagerTest extends WebTestCase
                     ],
                     null,
                     null,
-                    new HttpTimeEntry(RedmineHttpClientMock::userId, 1, 0.0)
+                    [new HttpTimeEntry(RedmineHttpClientMock::userId, 1, 0.0)]
                 ),
             ],
         ];
@@ -276,7 +308,8 @@ class ManagerTest extends WebTestCase
     {
         $this->httpClient->init();
 
-        $this->httpClient->issues = $input->issues;
+        $this->httpClient->timeEntries = $input->timeEntries;
+        $this->httpClient->issues      = $input->issues;
 
         $user = $this->getUser();
 
@@ -299,12 +332,7 @@ class ManagerTest extends WebTestCase
             $this->assertEquals($outputIssue->getStatusId(), $issue->getStatusId());
         }
 
-        if ($output->timeEntry !== null) {
-            $this->assertEquals(1, count($this->httpClient->timeEntries));
-            $this->assertEquals($output->timeEntry->getIssueId(), $this->httpClient->timeEntries[0]->getIssueId());
-        } else {
-            $this->assertEquals(0, count($this->httpClient->timeEntries));
-        }
+        $this->assertEquals(count($output->timeEntries), count($this->httpClient->timeEntries));
     }
 
     private function getUser(): User

@@ -63,7 +63,7 @@ class RedmineHttpClient implements RedmineHttpClientInterface
         }
     }
 
-    public function addTimeEntry(int $issueId, float $hours, string $userLogin): void
+    public function addTimeEntry(int $issueId, float $hours, string $userLogin, \DateTimeImmutable $spentOn): void
     {
         $this->request('POST', 'time_entries.json', [
             'json'    => [
@@ -71,7 +71,8 @@ class RedmineHttpClient implements RedmineHttpClientInterface
                     [
                         'issue_id' => $issueId,
                         'hours'    => $hours,
-                        'comments' => 'Added by RedmineIssueBot'
+                        'comments' => 'Added by RedmineIssueBot',
+                        'spent_at' => $spentOn->format('Y-m-d')
                     ],
                 'limit'      => 100//@todo
             ],

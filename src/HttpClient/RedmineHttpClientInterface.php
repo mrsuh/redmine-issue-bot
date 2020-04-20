@@ -9,7 +9,7 @@ use App\HttpClient\User as HttpUser;
 
 interface RedmineHttpClientInterface
 {
-    public function addTimeEntry(int $issueId, float $hours, string $userLogin): void;
+    public function addTimeEntry(int $issueId, float $hours, string $userLogin, \DateTimeImmutable $spentOn): void;
 
     public function setIssueStatus(int $issueId, int $statusId, string $userLogin): void;
 

@@ -47,7 +47,7 @@ class RedmineHttpClientMock implements RedmineHttpClientInterface
         $this->users[self::userId] = new HttpUser(self::userId, self::userLogin);
     }
 
-    public function addTimeEntry(int $issueId, float $hours, string $userLogin): void
+    public function addTimeEntry(int $issueId, float $hours, string $userLogin, \DateTimeImmutable $spentOn): void
     {
         $this->timeEntries[] = new HttpTimeEntry(self::userId, $issueId, $hours);
     }

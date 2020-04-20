@@ -16,15 +16,15 @@ class TestSet
     /** @var HttpIssue[] */
     public $issues = [];
 
-    /** @var HttpTimeEntry */
-    public $timeEntry = null;
+    /** @var HttpTimeEntry[] */
+    public $timeEntries = [];
 
-    public function __construct(array $issues = [], ?int $userCurrentTaskId = null, ?\DateTimeImmutable $userCurrentTaskStartedAt = null, ?HttpTimeEntry $timeEntry = null)
+    public function __construct(array $issues = [], ?int $userCurrentTaskId = null, ?\DateTimeImmutable $userCurrentTaskStartedAt = null, array $timeEntries = [])
     {
         $this->issues                   = $issues;
         $this->userCurrentTaskId        = $userCurrentTaskId;
         $this->userCurrentTaskStartedAt = $userCurrentTaskStartedAt;
-        $this->timeEntry                = $timeEntry;
+        $this->timeEntries              = $timeEntries;
     }
 
     public function getIssueById(int $id): ?HttpIssue

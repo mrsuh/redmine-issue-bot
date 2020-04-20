@@ -51,6 +51,8 @@ class Manager
         }
 
         $this->handleMaxHours($users);
+
+        $this->handleDailyIssues($users);
     }
 
     private function handleUserIssues(User $user, $issues)
@@ -193,7 +195,7 @@ class Manager
                 $totalUserHours += $httpTimeEntriesGroupedByUserId[$userId];
             }
 
-            if ($totalUserHours > $this->config->getMaxDailyHours()) {
+            if ($totalUserHours >= $this->config->getMaxDailyHours()) {
                 $this->addCurrentTimeEntry($user);
 
                 $this->setIssueStatus($user, $user->getCurrentTaskId(), $this->config->getStatusNewId());
@@ -206,6 +208,34 @@ class Manager
         }
     }
 
+    /**
+     * @param User[] $users
+     * @throws \Exception
+     */
+    private function handleDailyIssues(array $users)
+    {
+        $date = new \DateTimeImmutable();
+        foreach ($users as $user) {
+
+            $this->logger->debug('Handling daily user issues', ['userId' => $user->getId(), 'userLogin' => $user->getLogin()]);
+
+            if ($user->getCurrentTaskId() === null) {
+                continue;
+            }
+
+            if ($user->getCurrentTaskStartedAt()->format('Y-m-d') === $date->format('Y-m-d')) {
+                continue;
+            }
+
+            $this->setIssueStatus($user, $user->getCurrentTaskId(), $this->config->getStatusNewId());
+            $this->addCurrentTimeEntry($user);
+
+            $user->setCurrentTaskId(null);
+            $user->setCurrentTaskStartedAt(null);
+            $this->entityManager->flush();
+        }
+    }
+
     private function addCurrentTimeEntry(User $user)
     {
         if (!$user->isTrackTime()) {
@@ -215,7 +245,8 @@ class Manager
         $this->httpClient->addTimeEntry(
             $user->getCurrentTaskId(),
             $this->roundTime(new \DateTimeImmutable(), $user->getCurrentTaskStartedAt()),
-            $user->getLogin()
+            $user->getLogin(),
+            $user->getCurrentTaskStartedAt()
         );
     }
 
