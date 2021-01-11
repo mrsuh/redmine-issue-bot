@@ -262,6 +262,6 @@ class Manager
 
     private function roundTime(\DateTimeImmutable $from, \DateTimeImmutable $to): float
     {
-        return round(($from->getTimestamp() - $to->getTimestamp()) / 60 / 60, 4);
+        return round(($from->getTimestamp() - $to->getTimestamp()) / 60 / 60, 2);
     }
 }
