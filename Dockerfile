@@ -1,12 +1,14 @@
-FROM php:7.3-cli
+FROM php:7.4-cli
+
+COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/
 
 RUN apt-get update && apt-get upgrade -y \
+    netcat \
+    git \
     libzip-dev \
-    unzip \
-    libmcrypt-dev \
-    librabbitmq-dev \
-    zlib1g-dev \
-    && docker-php-ext-install \
+    unzip
+
+RUN install-php-extensions \
     iconv \
     mbstring \
     zip \
@@ -14,9 +16,15 @@ RUN apt-get update && apt-get upgrade -y \
     pdo_mysql \
     mysqli
 
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.0 /usr/bin/composer /usr/bin/composer
 
 COPY . /app
+
+RUN groupadd -r user && useradd -m -g user user
+
+RUN chown -R user /app
+
+USER user
 
 RUN sh /app/bin/build.sh
 
