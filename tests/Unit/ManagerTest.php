@@ -249,7 +249,7 @@ class ManagerTest extends WebTestCase
                         )
                     ],
                     1,
-                    new \DateTimeImmutable(),
+                    (new \DateTimeImmutable())->modify('- 1 hour'),
                     [new HttpTimeEntry(RedmineHttpClientMock::userId, 1, 9.0)]
                 ),
                 new TestSet(
