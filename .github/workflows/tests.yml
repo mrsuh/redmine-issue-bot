@@ -15,8 +15,13 @@ jobs:
             -   name: Validate composer.json and composer.lock
                 run: composer validate
 
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: 7.4
+
             -   name: Install dependencies
-                run: composer install --prefer-dist --no-progress --no-suggest
+                run: composer install --prefer-dist --no-progress
 
             -   name: Run tests
                 run: sh bin/test.sh
