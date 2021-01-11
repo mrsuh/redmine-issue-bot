@@ -242,9 +242,14 @@ class Manager
             return;
         }
 
+        $time = $this->roundTime(new \DateTimeImmutable(), $user->getCurrentTaskStartedAt());
+        if ($time === 0.0) {
+            return;
+        }
+
         $this->httpClient->addTimeEntry(
             $user->getCurrentTaskId(),
-            $this->roundTime(new \DateTimeImmutable(), $user->getCurrentTaskStartedAt()),
+            $time,
             $user->getLogin(),
             $user->getCurrentTaskStartedAt()
         );
