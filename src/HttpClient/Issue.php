@@ -1,6 +1,7 @@
 <?php
 
 namespace App\HttpClient;
+use App\Entity\User as EntityUser;
 
 class Issue
 {
@@ -11,6 +12,8 @@ class Issue
     private $statusId = 0;
     private $subject;
     private $private;
+    private EntityUser $user;
+    private float $hours = 0.0;
 
     public function __construct(int $id, int $assignedToUserId, \DateTimeImmutable $updatedOn, int $statusId, string $subject, bool $private)
     {
@@ -55,5 +58,25 @@ class Issue
     public function isPrivate(): bool
     {
         return $this->private;
+    }
+
+    public function getUser(): ?EntityUser
+    {
+        return $this->user;
+    }
+
+    public function setUser(EntityUser $user): void
+    {
+        $this->user = $user;
+    }
+
+    public function getHours(): float
+    {
+        return $this->hours;
+    }
+
+    public function setHours(float $hours): void
+    {
+        $this->hours = $hours;
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Command\Issue;
 
-use App\Entity\User;
+use App\Entity\Status;
 use App\HttpClient\Issue;
 use App\HttpClient\RedmineHttpClient;
 use App\Repository\StatusRepository;
@@ -54,14 +54,43 @@ class NotifyCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $statuses = [];
+        $previousBusinessDay = $this->getPreviousBusinessDay();
+        $statuses            = [];
         foreach ($this->statusRepository->findForReview() as $status) {
             $statuses[$status->getRedmineId()] = $status->getRedmineName();
         }
 
-        $issues = [];
+        $inProgressStatus = $this->statusRepository->findOneByType(Status::IN_PROGRESS);
+        if ($inProgressStatus === null) {
+            throw new \Exception();
+        }
+
+        $usersWithoutInProgressIssues    = [];
+        $timeLessUsers    = [];
+        $issues           = [];
+        $inProgressIssues = [];
         foreach ($this->userRepository->findAll() as $user) {
+            $timeEntries = $this->redmineHttpClient->getTimeEntriesByUserIdsAndDate([$user->getRedmineId()], $previousBusinessDay);
+            if (count($timeEntries) === 0) {
+                $timeLessUsers[] = $user;
+            }
+
+            $hasInProgressIssue = false;
             foreach ($this->redmineHttpClient->getIssuesByUserId($user->getRedmineId()) as $issue) {
+                $issue->setUser($user);
+
+                if ($inProgressStatus->getRedmineId() === $issue->getStatusId()) {
+
+                    $timeEntries = $this->redmineHttpClient->getTimeEntriesByUserIdAndIssueId($user->getRedmineId(), $issue->getId());
+                    $hours       = 0.0;
+                    foreach ($timeEntries as $timeEntry) {
+                        $hours += $timeEntry->getHours();
+                    }
+                    $issue->setHours($hours);
+
+                    $inProgressIssues[] = $issue;
+                    $hasInProgressIssue = true;
+                }
 
                 if (!in_array($issue->getStatusId(), array_keys($statuses))) {
                     continue;
@@ -71,44 +100,36 @@ class NotifyCommand extends Command
                     continue;
                 }
 
-                $issues[] = ['issue' => $issue, 'user' => $user];
+                $issues[] = $issue;
+            }
+            if(!$hasInProgressIssue) {
+                $usersWithoutInProgressIssues[] = $user;
             }
         }
 
-        usort($issues, function ($a, $b): int {
-            /** @var Issue $issueA */
-            $issueA = $a['issue'];
-
-            /** @var Issue $issueB */
-            $issueB = $b['issue'];
-
-            /** @var User $userA */
-            $userA = $a['user'];
-
-            /** @var User $userB */
-            $userB = $b['user'];
-
-            return $issueA->getStatusId() - $issueB->getStatusId() ?: strcmp($userA->getRedmineLogin(), $userB->getRedmineLogin());
+        usort($issues, function (Issue $a, Issue $b): int {
+            return $a->getStatusId() - $b->getStatusId() ?: strcmp($a->getUser()->getRedmineLogin(), $b->getUser()->getRedmineLogin());
         });
 
         $issuesByStatuses = [];
-        foreach ($issues as $data) {
-            /** @var Issue $issue */
-            $issue = $data['issue'];
-
-            /** @var User $user */
-            $user = $data['user'];
-
+        foreach ($issues as $issue) {
             $status = $statuses[$issue->getStatusId()];
 
             if (!array_key_exists($status, $issuesByStatuses)) {
                 $issuesByStatuses[$status] = [];
             }
 
-            $issuesByStatuses[$status][] = $data;
+            $issuesByStatuses[$status][] = $issue;
         }
 
-        $message = $this->twig->render('notification.html.twig', ['redmineBaseUrl' => $this->redmineBaseUrl, 'issuesByStatuses' => $issuesByStatuses]);
+        $message = $this->twig->render('notification.html.twig', [
+            'redmineBaseUrl'      => $this->redmineBaseUrl,
+            'issuesByStatuses'    => $issuesByStatuses,
+            'timeLessUsers'       => $timeLessUsers,
+            'previousBusinessDay' => $previousBusinessDay,
+            'inProgressIssues'    => $inProgressIssues,
+            'usersWithoutInProgressIssues'    => $usersWithoutInProgressIssues,
+        ]);
 
         if ($input->getOption('dry-run')) {
             $output->writeln($message);
@@ -119,5 +140,19 @@ class NotifyCommand extends Command
         $this->botApi->sendMessage($this->telegramChatId, trim($message), 'html');
 
         return 0;
+    }
+
+    private function getPreviousBusinessDay(): \DateTimeImmutable
+    {
+        $previousBusinessDay = new \DateTimeImmutable();
+        $previousBusinessDay = $previousBusinessDay->modify('- 1 day');
+        while (
+            (int)$previousBusinessDay->format('N') === 6 ||
+            (int)$previousBusinessDay->format('N') === 7
+        ) {
+            $previousBusinessDay = $previousBusinessDay->modify('- 1 day');
+        }
+
+        return $previousBusinessDay;
     }
 }

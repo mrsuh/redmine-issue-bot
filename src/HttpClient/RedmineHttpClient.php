@@ -197,4 +197,26 @@ class RedmineHttpClient implements RedmineHttpClientInterface
 
         return $timeEntries;
     }
+
+    /**
+     * @throws \Exception
+     * @return HttpTimeEntry[]
+     */
+    public function getTimeEntriesByUserIdAndIssueId(int $userId, int $issueId): array
+    {
+        $response = $this->request('GET', 'time_entries.json', [
+            'query' => [
+                'user_id'  => $userId,
+                'issue_id' => $issueId,
+                'limit'    => 100//@todo
+            ]
+        ]);
+
+        $timeEntries = [];
+        foreach ($response['time_entries'] as $responseTimeEntry) {
+            $timeEntries[] = new HttpTimeEntry($responseTimeEntry['user']['id'], $responseTimeEntry['issue']['id'], $responseTimeEntry['hours']);
+        }
+
+        return $timeEntries;
+    }
 }
