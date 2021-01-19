@@ -1,0 +1,10 @@
+{% for status, issues in issuesByStatuses %}
+    <b>{{ status }}:</b>
+    <ul>
+        {% for issue in issues %}
+            <li>@{{ issue['user'].getTelegramLogin }} <a
+                        href="{{ redmineBaseUrl }}/issues/{{ issue['issue'].getId }}">{{ issue['issue'].getSubject }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endfor %}

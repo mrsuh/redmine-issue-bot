@@ -15,7 +15,7 @@ class TelegramController extends AbstractController
      */
     public function index(Request $request, LoggerInterface $logger): Response
     {
-        $logger->info('Telegram webhook', ['request' => $request->request->all()]);
+        $logger->info('Telegram webhook', ['request' => json_decode($request->getContent(), true)]);
 
         return new Response();
     }

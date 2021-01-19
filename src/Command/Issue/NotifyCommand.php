@@ -12,28 +12,39 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use TelegramBot\Api\BotApi;
+use Twig\Environment;
 
 class NotifyCommand extends Command
 {
     protected static $defaultName = 'issue:notify';
 
-    private        $redmineHttpClient;
-    private        $userRepository;
-    private        $statusRepository;
-    private BotApi $botApi;
-    private string $telegramChatId;
-    private string $redmineBaseUrl;
+    private             $redmineHttpClient;
+    private             $userRepository;
+    private             $statusRepository;
+    private BotApi      $botApi;
+    private Environment $twig;
+    private string      $telegramChatId;
+    private string      $redmineBaseUrl;
 
     protected function configure(): void
     {
         $this->addOption('dry-run', null, InputOption::VALUE_NONE);
     }
 
-    public function __construct(RedmineHttpClient $redmineHttpClient, UserRepository $userRepository, StatusRepository $statusRepository, BotApi $botApi, string $telegramChatId, string $redmineHttpUrl)
+    public function __construct(
+        RedmineHttpClient $redmineHttpClient,
+        UserRepository $userRepository,
+        StatusRepository $statusRepository,
+        BotApi $botApi,
+        Environment $twig,
+        string $telegramChatId,
+        string $redmineHttpUrl
+    )
     {
         $this->redmineHttpClient = $redmineHttpClient;
         $this->userRepository    = $userRepository;
         $this->statusRepository  = $statusRepository;
+        $this->twig              = $twig;
         $this->botApi            = $botApi;
         $this->telegramChatId    = $telegramChatId;
         $parse                   = parse_url($redmineHttpUrl);
@@ -80,8 +91,7 @@ class NotifyCommand extends Command
             return $issueA->getStatusId() - $issueB->getStatusId() ?: strcmp($userA->getRedmineLogin(), $userB->getRedmineLogin());
         });
 
-        $message         = '';
-        $currentStatusId = 0;
+        $issuesByStatuses = [];
         foreach ($issues as $data) {
             /** @var Issue $issue */
             $issue = $data['issue'];
@@ -89,26 +99,24 @@ class NotifyCommand extends Command
             /** @var User $user */
             $user = $data['user'];
 
-            if ($currentStatusId !== $issue->getStatusId()) {
-                $message         .= "\n{$statuses[$issue->getStatusId()]}:\n";
-                $currentStatusId = $issue->getStatusId();
+            $status = $statuses[$issue->getStatusId()];
+
+            if (!array_key_exists($status, $issuesByStatuses)) {
+                $issuesByStatuses[$status] = [];
             }
 
-            $username = $user->getRedmineLogin();
-            if (!empty($user->getTelegramLogin())) {
-                $username = "@{$user->getTelegramLogin()}";
-            }
-
-            $message .= "+ {$username} - {$this->redmineBaseUrl}/issues/{$issue->getId()} {$issue->getSubject()}\n";
+            $issuesByStatuses[$status][] = $data;
         }
 
-        echo $message;
+        $message = $this->twig->render('notification.html.twig', ['redmineBaseUrl' => $this->redmineBaseUrl, 'issuesByStatuses' => $issuesByStatuses]);
 
         if ($input->getOption('dry-run')) {
+            $output->writeln($message);
+
             return 0;
         }
 
-        $this->botApi->sendMessage($this->telegramChatId, trim($message));
+        $this->botApi->sendMessage($this->telegramChatId, trim($message), 'html');
 
         return 0;
     }
