@@ -22,3 +22,5 @@ else
   php composer.phar install --prefer-dist --no-interaction
   php composer.phar dump-autoload --optimize --classmap-authoritative
 fi
+
+php bin/console doctrine:migrations:migrate --no-interaction

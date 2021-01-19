@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Command;
+namespace App\Command\Issue;
 
-use App\Config\Loader;
 use App\Repository\UserRepository;
 use App\Service\Manager;
 use Symfony\Component\Console\Command\Command;
@@ -10,11 +9,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ManageCommand extends Command
+class SyncCommand extends Command
 {
-    protected static $defaultName = 'manage';
+    protected static $defaultName = 'issue:sync';
 
-    private $configLoader;
     private $manager;
     private $userRepository;
 
@@ -23,10 +21,9 @@ class ManageCommand extends Command
         $this->addOption('period', null, InputOption::VALUE_OPTIONAL, 'Option description', 3);
     }
 
-    public function __construct(Loader $configLoader, Manager $manager, UserRepository $userRepository)
+    public function __construct(Manager $manager, UserRepository $userRepository)
     {
         $this->manager        = $manager;
-        $this->configLoader   = $configLoader;
         $this->userRepository = $userRepository;
         parent::__construct();
     }
@@ -35,12 +32,8 @@ class ManageCommand extends Command
     {
         $period = (int)$input->getOption('period');
 
-        $this->manager->setConfig($this->configLoader->load());
-
-        $users = $this->userRepository->findActive();
-
         while (true) {
-            $this->manager->manage($users);
+            $this->manager->manage($this->userRepository->findAll());
             sleep($period);
         }
 

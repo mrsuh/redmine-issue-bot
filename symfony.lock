@@ -245,21 +245,6 @@
     "symfony/orm-pack": {
         "version": "v1.0.8"
     },
-    "symfony/phpunit-bridge": {
-        "version": "4.3",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "4.3",
-            "ref": "6d0e35f749d5f4bfe1f011762875275cd3f9874f"
-        },
-        "files": [
-            ".env.test",
-            "bin/phpunit",
-            "phpunit.xml.dist",
-            "tests/bootstrap.php"
-        ]
-    },
     "symfony/polyfill-intl-grapheme": {
         "version": "v1.22.0"
     },
@@ -309,6 +294,9 @@
     },
     "symfony/yaml": {
         "version": "v5.0.7"
+    },
+    "telegram-bot/api": {
+        "version": "v2.3.20"
     },
     "zendframework/zend-code": {
         "version": "3.4.1"

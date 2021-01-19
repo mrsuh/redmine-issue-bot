@@ -19,32 +19,8 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
-    public function findOneById(int $id): ?User
+    public function findOneByRedmineId(int $id): ?User
     {
-        return $this->findOneBy(['id' => $id]);
-    }
-
-    /**
-     * @return User[]
-     */
-    public function findByIds(array $ids): array
-    {
-        return $this->findBy(['id' => $ids]);
-    }
-
-    /**
-     * @return User[]
-     */
-    public function findActive(): array
-    {
-        return $this->findBy(['active' => true]);
-    }
-
-    public function deleteAll(): void
-    {
-        $this->createQueryBuilder('u')
-             ->delete()
-             ->getQuery()
-             ->getResult();
+        return $this->findOneBy(['redmineId' => $id]);
     }
 }

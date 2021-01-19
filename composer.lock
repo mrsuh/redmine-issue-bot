@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d13419dc2895795b1a9b5d5a69ae443e",
+    "content-hash": "a8547b40b72a5ceba2f7e8a2f053d823",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -1506,16 +1506,16 @@
         },
         {
             "name": "friendsofphp/proxy-manager-lts",
-            "version": "v1.0.2",
+            "version": "v1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfPHP/proxy-manager-lts.git",
-                "reference": "4a66e4e0d3279d3bb3722963b4294331fabe15bc"
+                "reference": "121af47c9aee9c03031bdeca3fac0540f59aa5c3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfPHP/proxy-manager-lts/zipball/4a66e4e0d3279d3bb3722963b4294331fabe15bc",
-                "reference": "4a66e4e0d3279d3bb3722963b4294331fabe15bc",
+                "url": "https://api.github.com/repos/FriendsOfPHP/proxy-manager-lts/zipball/121af47c9aee9c03031bdeca3fac0540f59aa5c3",
+                "reference": "121af47c9aee9c03031bdeca3fac0540f59aa5c3",
                 "shasum": ""
             },
             "require": {
@@ -1572,7 +1572,7 @@
             ],
             "support": {
                 "issues": "https://github.com/FriendsOfPHP/proxy-manager-lts/issues",
-                "source": "https://github.com/FriendsOfPHP/proxy-manager-lts/tree/v1.0.2"
+                "source": "https://github.com/FriendsOfPHP/proxy-manager-lts/tree/v1.0.3"
             },
             "funding": [
                 {
@@ -1584,7 +1584,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-01-04T11:21:26+00:00"
+            "time": "2021-01-14T21:52:44+00:00"
         },
         {
             "name": "laminas/laminas-code",
@@ -4859,6 +4859,66 @@
                 }
             ],
             "time": "2020-12-08T17:02:38+00:00"
+        },
+        {
+            "name": "telegram-bot/api",
+            "version": "v2.3.20",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/TelegramBot/Api.git",
+                "reference": "d709fb0aedbbf7d75a06ffec19f99537c093b921"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/TelegramBot/Api/zipball/d709fb0aedbbf7d75a06ffec19f99537c093b921",
+                "reference": "d709fb0aedbbf7d75a06ffec19f99537c093b921",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=5.5.0"
+            },
+            "require-dev": {
+                "codeception/codeception": "*",
+                "phpunit/phpunit": "~4.0",
+                "squizlabs/php_codesniffer": "2.*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "TelegramBot\\Api\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ilya Gusev",
+                    "email": "mail@igusev.ru",
+                    "homepage": "https://php-cat.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHP Wrapper for Telegram Bot API",
+            "homepage": "https://github.com/TelegramBot/Api",
+            "keywords": [
+                "bot",
+                "bot api",
+                "php",
+                "telegram"
+            ],
+            "support": {
+                "issues": "https://github.com/TelegramBot/Api/issues",
+                "source": "https://github.com/TelegramBot/Api/tree/v2.3.20"
+            },
+            "time": "2021-01-13T14:09:58+00:00"
         }
     ],
     "packages-dev": [
@@ -4920,16 +4980,16 @@
         },
         {
             "name": "symfony/maker-bundle",
-            "version": "1.27.0",
+            "version": "v1.28.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/maker-bundle.git",
-                "reference": "a47408fa6e39034a5abe324a46f4e6733266267a"
+                "reference": "6f4d27a68c92179c124f5331a27e32d197c9bd59"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/a47408fa6e39034a5abe324a46f4e6733266267a",
-                "reference": "a47408fa6e39034a5abe324a46f4e6733266267a",
+                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/6f4d27a68c92179c124f5331a27e32d197c9bd59",
+                "reference": "6f4d27a68c92179c124f5331a27e32d197c9bd59",
                 "shasum": ""
             },
             "require": {
@@ -4988,7 +5048,7 @@
             ],
             "support": {
                 "issues": "https://github.com/symfony/maker-bundle/issues",
-                "source": "https://github.com/symfony/maker-bundle/tree/1.27.0"
+                "source": "https://github.com/symfony/maker-bundle/tree/v1.28.0"
             },
             "funding": [
                 {
@@ -5004,90 +5064,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-01-08T18:14:10+00:00"
-        },
-        {
-            "name": "symfony/phpunit-bridge",
-            "version": "v5.2.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "235823f6d215c9bd930a47a496e62c1354cde55b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/235823f6d215c9bd930a47a496e62c1354cde55b",
-                "reference": "235823f6d215c9bd930a47a496e62c1354cde55b",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.5.9"
-            },
-            "conflict": {
-                "phpunit/phpunit": "<4.8.35|<5.4.3,>=5.0|<6.4,>=6.0|9.1.2"
-            },
-            "require-dev": {
-                "symfony/deprecation-contracts": "^2.1",
-                "symfony/error-handler": "^4.4|^5.0"
-            },
-            "suggest": {
-                "symfony/error-handler": "For tracking deprecated interfaces usages at runtime with DebugClassLoader"
-            },
-            "bin": [
-                "bin/simple-phpunit"
-            ],
-            "type": "symfony-bridge",
-            "extra": {
-                "thanks": {
-                    "name": "phpunit/phpunit",
-                    "url": "https://github.com/sebastianbergmann/phpunit"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "bootstrap.php"
-                ],
-                "psr-4": {
-                    "Symfony\\Bridge\\PhpUnit\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nicolas Grekas",
-                    "email": "p@tchwork.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony PHPUnit Bridge",
-            "homepage": "https://symfony.com",
-            "support": {
-                "source": "https://github.com/symfony/phpunit-bridge/tree/v5.2.1"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2020-12-14T22:27:17+00:00"
+            "time": "2021-01-15T18:19:20+00:00"
         }
     ],
     "aliases": [],
@@ -5096,7 +5073,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.3",
+        "php": ">=7.4",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-json": "*"

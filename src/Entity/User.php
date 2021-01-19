@@ -13,93 +13,45 @@ class User
      * @ORM\Id()
      * @ORM\Column(type="integer")
      */
-    private $id = 0;
+    private $redmineId = 0;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $login = '';
+    private $redmineLogin = '';
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", length=255)
      */
-    private $currentTaskId;
+    private $telegramLogin = '';
 
-    /**
-     * @var \DateTimeImmutable
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     */
-    private $currentTaskStartedAt;
-
-    /**
-     * @var bool
-     * @ORM\Column(type="boolean")
-     */
-    private $trackTime = false;
-
-    /**
-     * @var bool
-     * @ORM\Column(type="boolean")
-     */
-    private $active = true;
-
-    public function __construct(int $id)
+    public function getRedmineId(): int
     {
-        $this->id = $id;
+        return $this->redmineId;
     }
 
-    public function getId(): int
+    public function setRedmineId(int $redmineId): void
     {
-        return $this->id;
+        $this->redmineId = $redmineId;
     }
 
-    public function getLogin(): string
+    public function getRedmineLogin(): string
     {
-        return $this->login;
+        return $this->redmineLogin;
     }
 
-    public function setLogin(string $login): void
+    public function setRedmineLogin(string $redmineLogin): void
     {
-        $this->login = $login;
+        $this->redmineLogin = $redmineLogin;
     }
 
-    public function getCurrentTaskId(): ?int
+    public function getTelegramLogin(): string
     {
-        return $this->currentTaskId;
+        return $this->telegramLogin;
     }
 
-    public function setCurrentTaskId(?int $currentTaskId): void
+    public function setTelegramLogin(string $telegramLogin): void
     {
-        $this->currentTaskId = $currentTaskId;
-    }
-
-    public function getCurrentTaskStartedAt(): ?\DateTimeImmutable
-    {
-        return $this->currentTaskStartedAt;
-    }
-
-    public function setCurrentTaskStartedAt(?\DateTimeImmutable $currentTaskStartedAt): void
-    {
-        $this->currentTaskStartedAt = $currentTaskStartedAt;
-    }
-
-    public function isTrackTime(): bool
-    {
-        return $this->trackTime;
-    }
-
-    public function setTrackTime(bool $trackTime): void
-    {
-        $this->trackTime = $trackTime;
-    }
-
-    public function isActive(): bool
-    {
-        return $this->active;
-    }
-
-    public function setActive(bool $active): void
-    {
-        $this->active = $active;
+        $this->telegramLogin = $telegramLogin;
     }
 }

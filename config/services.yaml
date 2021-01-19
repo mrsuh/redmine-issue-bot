@@ -7,9 +7,22 @@ services:
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
         bind:
             string $redmineHttpUrl: '%env(string:REDMINE_HTTP_URL)%'
+            string $telegramChatId: '%env(string:TELEGRAM_CHAT_ID)%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
-        resource: '../src/*'
-        exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+            - '../src/Tests/'
+
+    App\Controller\:
+        resource: '../src/Controller/'
+        tags: [ 'controller.service_arguments' ]
+
+    TelegramBot\Api\BotApi:
+        arguments:
+            - '%env(TELEGRAM_TOKEN)%'
