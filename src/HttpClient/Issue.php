@@ -9,13 +9,17 @@ class Issue
     /** @var \DateTimeImmutable */
     private $updatedOn;
     private $statusId = 0;
+    private $subject;
+    private $private;
 
-    public function __construct(int $id, int $assignedToUserId, \DateTimeImmutable $updatedOn, int $statusId)
+    public function __construct(int $id, int $assignedToUserId, \DateTimeImmutable $updatedOn, int $statusId, string $subject, bool $private)
     {
         $this->id               = $id;
         $this->assignedToUserId = $assignedToUserId;
         $this->updatedOn        = $updatedOn;
         $this->statusId         = $statusId;
+        $this->subject          = $subject;
+        $this->private          = $private;
     }
 
     public function getId(): int
@@ -41,5 +45,15 @@ class Issue
     public function getStatusId(): int
     {
         return $this->statusId;
+    }
+
+    public function getSubject(): string
+    {
+        return $this->subject;
+    }
+
+    public function isPrivate(): bool
+    {
+        return $this->private;
     }
 }

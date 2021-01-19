@@ -2,4 +2,3 @@
 storage.sqlite
 var/*
 vendor/*
-bin/.phpunit/*

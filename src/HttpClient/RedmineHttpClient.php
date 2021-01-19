@@ -141,6 +141,35 @@ class RedmineHttpClient implements RedmineHttpClientInterface
                 (int)$responseIssue['assigned_to']['id'],
                 \DateTimeImmutable::createFromFormat(\DateTime::ATOM, $responseIssue['updated_on']),
                 (int)$responseIssue['status']['id'],
+                $responseIssue['subject'],
+                (bool)$responseIssue['is_private']
+            );
+        }
+
+        return $issues;
+    }
+
+    /**
+     * @throws \Exception
+     * @return HttpIssue[]
+     */
+    public function getIssuesByUserId(int $userId): array
+    {
+        $response = $this->request('GET', 'issues.json', [
+            'query' => [
+                'assigned_to_id' => $userId
+            ]
+        ]);
+
+        $issues = [];
+        foreach ($response['issues'] as $responseIssue) {
+            $issues[] = new HttpIssue(
+                (int)$responseIssue['id'],
+                (int)$responseIssue['assigned_to']['id'],
+                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, $responseIssue['updated_on']),
+                (int)$responseIssue['status']['id'],
+                $responseIssue['subject'],
+                (bool)$responseIssue['is_private']
             );
         }
 
